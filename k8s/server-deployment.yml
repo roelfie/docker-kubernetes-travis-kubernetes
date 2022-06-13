@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: server
+  template:
+    metadata:
+      labels:
+        component: server
+    spec:
+      containers:
+        - name: server
+          # TDOO environment variables needed by Express server to connect to Redis and Postgres
+          image: roelfie/fibonacci-api
+          ports:
+            - containerPort: 5000
