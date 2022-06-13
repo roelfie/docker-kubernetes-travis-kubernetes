@@ -12,9 +12,20 @@ spec:
       labels:
         component: postgres
     spec:
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-persistent-volume-claim
       containers:
         - name: postgres
           image: postgres:latest
           ports:
             # The course says that the postgres image by default listens on port 5432, but the latest docs say it's 8080.
             - containerPort: 8080
+          volumeMounts:
+              # volumeMount.mountPath: where it should be made available inside the container
+            - mountPath: /var/lib/postgresql/data
+              # volumeMount.name: refers to the volume defined above
+              name: postgres-storage
+              # sub folder inside the persistent volume
+              subPath: postgres
