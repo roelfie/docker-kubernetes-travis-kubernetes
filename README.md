@@ -1,6 +1,10 @@
 # docker-kubernetes-travis-kubernetes
 Project used in the Docker / Kubernetes Udemy course, to setup a CI/CD pipeline with Travis for a Kubernetes deployment.
 
+For more background information on all the Kubernetes Objects and commands used in this repo, see section 14 of the 
+course:
+[a-multi-container-app-with-kubernetes](https://github.com/roelfie/docker-kubernetes-course#14-a-multi-container-app-with-kubernetes)
+
 ## Starting point: `docker-compose` deployment to Elastic Beanstalk
 
 The starting point for this project is 

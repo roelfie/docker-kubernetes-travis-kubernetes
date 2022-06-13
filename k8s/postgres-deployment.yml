@@ -29,3 +29,10 @@ spec:
               name: postgres-storage
               # sub folder inside the persistent volume
               subPath: postgres
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                # Secret was created on cli: kubectl create secret generic pgpassword --from-literal PGPASSWORD=Postgres123
+                secretKeyRef:
+                  name: pgpassword
+                  key: PGPASSWORD
