@@ -5,6 +5,8 @@ For more background information on all the Kubernetes Objects and commands used 
 course:
 [a-multi-container-app-with-kubernetes](https://github.com/roelfie/docker-kubernetes-course#14-a-multi-container-app-with-kubernetes)
 
+In case something does not work, compare with the [course instructor's repo](https://github.com/StephenGrider/DockerCasts/tree/master/complex)
+
 ## Starting point: `docker-compose` deployment to Elastic Beanstalk
 
 The starting point for this project is 
