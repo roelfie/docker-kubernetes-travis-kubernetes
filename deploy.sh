@@ -14,7 +14,7 @@ docker push roelfie/fibonacci-worker:$SHA
 kubectl apply -f k8s
 
 # Ensure that we're deploying the most recent images
-kubectl set image client-deployment client=roelfie/fibonacci-client:$SHA
-kubectl set image server-deployment server=roelfie/fibonacci-api:$SHA
-kubectl set image worker-deployment worker=roelfie/fibonacci-worker:$SHA
+kubectl set image deployments/client-deployment client=roelfie/fibonacci-client:$SHA
+kubectl set image deployments/server-deployment server=roelfie/fibonacci-api:$SHA
+kubectl set image deployments/worker-deployment worker=roelfie/fibonacci-worker:$SHA
 
