@@ -1,18 +1,34 @@
 sudo: required
 services:
   - docker
+env:
+  global:
+    - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+    - SHA=$(git rev-parse HEAD)
 before_install:
+  # Decrypt GCP service account token so Travis can actually use the Google Cloud SDK (e.g. kubectl)
   - openssl aes-256-cbc -K $encrypted_cb64ce276cc1_key -iv $encrypted_cb64ce276cc1_iv -in service-account.json.enc -out service-account.json -d
+  # Install Google Cloud SDK
   - curl https://sdk.cloud.google.clom | bash > /dev/null
   - source $HOME/google-cloud-sdk/path.bash.inc
   - gcloud components update kubectl
+  # Authenticate Google Cloud SDK
   - gcloud auth activate-service-account --key-file service-account.json
+  # Make sure we talk to the correct GKE cluster
   - gcloud config set project udemy-kubernetes-353220
   - gcloud config set compute/zone europe-west4-a
-  - gcloud container get-credentials fibonacci-cluster
+  - gcloud container clusters get-credentials fibonacci-cluster
+  # Authenticate with Docker
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  # Build Docker image(s) for test phase
   - docker build -t roelfie/fibonacci-test -f ./client/Dockerfile.dev ./client
 
 script:
   - docker run -e CI=true roelfie/fibonacci-test npm test
 
+deploy:
+  provider: script
+  # The deploy script will build images, push them to Docker Hub, and apply the changes with 'kubectl'
+  script: bash ./deploy.sh
+  on:
+    branch: main

@@ -13,8 +13,7 @@ spec:
         component: worker
     spec:
       containers:
-        - name: server
-          # TDOO environment variables needed to connect to Redis
+        - name: worker
           image: roelfie/fibonacci-worker
           env:
             - name: REDIS_HOST

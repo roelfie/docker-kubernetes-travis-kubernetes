@@ -14,7 +14,6 @@ spec:
     spec:
       containers:
         - name: server
-          # TDOO environment variables needed by Express server to connect to Redis and Postgres
           image: roelfie/fibonacci-api
           ports:
             - containerPort: 5000
