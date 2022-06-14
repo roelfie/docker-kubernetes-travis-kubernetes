@@ -1,0 +1,18 @@
+sudo: required
+services:
+  - docker
+before_install:
+  - openssl aes-256-cbc -K $encrypted_cb64ce276cc1_key -iv $encrypted_cb64ce276cc1_iv -in service-account.json.enc -out service-account.json -d
+  - curl https://sdk.cloud.google.clom | bash > /dev/null
+  - source $HOME/google-cloud-sdk/path.bash.inc
+  - gcloud components update kubectl
+  - gcloud auth activate-service-account --key-file service-account.json
+  - gcloud config set project udemy-kubernetes-353220
+  - gcloud config set compute/zone europe-west4-a
+  - gcloud container get-credentials fibonacci-cluster
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker build -t roelfie/fibonacci-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true roelfie/fibonacci-test npm test
+
