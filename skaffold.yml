@@ -1,0 +1,42 @@
+apiVersion: skaffold/v2beta12
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: roelfie/fibonacci-client
+      context: client
+      docker:
+        dockerfile: Dockerfile.dev
+      # Specify what files to inject into running Pods when it detects a change
+      # (this also tells Skaffold NOT to rebuild & deploy the Docker image on each code change)
+      sync:
+        manual:
+          - src: "src/**/*.js"
+            dest: .
+          - src: "src/**/*.css"
+            dest: .
+          - src: "src/**/*.html"
+            dest: .
+    - image: roelfie/fibonacci-api
+      context: server
+      docker:
+        dockerfile: Dockerfile.dev
+      # Specify what files to inject into running Pods when it detects a change
+      sync:
+        manual:
+          - src: "src/**/*.js"
+            dest: .
+    - image: roelfie/fibonacci-worker
+      context: worker
+      docker:
+        dockerfile: Dockerfile.dev
+      # Specify what files to inject into running Pods when it detects a change
+      sync:
+        manual:
+          - src: "src/**/*.js"
+            dest: .
